@@ -113,6 +113,8 @@ public class SignInActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                register.setTextColor(getResources().getColor(R.color.black));
+
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(SignInActivity.this);
                 builder.setTitle("Register").setMessage("Sign up as ")
@@ -146,6 +148,14 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+
+        sign_in_chk_box.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgot_pass.setTextColor(getResources().getColor(R.color.black));
+
+            }
+        });
 
     }
 
@@ -185,13 +195,11 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-    public void onBackPressed() {
-        if (back_pressed + 2000 > System.currentTimeMillis()) {
-            moveTaskToBack(true);
-        } else
-            Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();
-        back_pressed = System.currentTimeMillis();
-    }
+    @Override
+    protected void onResume() {
 
+
+        super.onResume();
+    }
 
 }
