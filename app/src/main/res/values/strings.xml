@@ -35,6 +35,10 @@
     <string name="monthly_blood_requirement">Monthly blood requirement</string>
     <string name="person_incharge">Person Incharge</string>
     <string name="reset_password">RESET PASSWORD</string>
+
+    <string name="facebook_app_id">2091594821163098</string>
+    <string name="fb_login_protocol_scheme">fb2091594821163098</string>
+
     <string-array name="blood_group">
         <item>Blood group</item>
         <item>O+</item>

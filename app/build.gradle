@@ -27,5 +27,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'pro.appus:zoom-splash:1.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.firebase:firebase-client-android:2.5.2'
 
 }
+apply plugin: 'com.google.gms.google-services'

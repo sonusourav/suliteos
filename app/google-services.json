@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "882048576140",
+    "firebase_url": "https://suliteos-poshan.firebaseio.com",
+    "project_id": "suliteos-poshan",
+    "storage_bucket": "suliteos-poshan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882048576140:android:430c5274780a94d2",
+        "android_client_info": {
+          "package_name": "com.suliteos.sonusourav.poshan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882048576140-12riv2t35mnr4101fu3l7eulp94hu38s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suliteos.sonusourav.poshan",
+            "certificate_hash": "e807f282013cac65f3229bc43eafa5daaf272059"
+          }
+        },
+        {
+          "client_id": "882048576140-kspf1s184veg32ssrroisc9lff53fddr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvYzyqW98Xtdvsrhxe_BF13ASlI2rtvic"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882048576140-kspf1s184veg32ssrroisc9lff53fddr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
