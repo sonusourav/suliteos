@@ -9,7 +9,7 @@
     <color name="wrong_credentials_color">#ec0615</color>
     <color name="text_blue">#0563C3</color>
     <color name="grey">#646566</color>
-    <color name="back_grey">#f9fafa</color>
+    <color name="back_grey">#b0f1b1</color>
     <color name="home_back">#f2f4f5</color>
     <color name="lbl_email">#333333</color>
     <color name="input_login">#222222</color>

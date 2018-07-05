@@ -1,17 +1,12 @@
 package com.suliteos.sonusourav.poshan;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Handler;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.appus.splash.Splash;
-
-import java.util.Random;
 
 public class LauncherActivity extends AppCompatActivity {
 
@@ -36,7 +31,7 @@ public class LauncherActivity extends AppCompatActivity {
                 LauncherActivity.this.startActivity(mainIntent);
                 LauncherActivity.this.finish();
             }
-        }, 3000);
+        }, 2500);
 
     }
 }
