@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity android:name=".LauncherActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,16 +21,31 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="locked"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
         </activity>
         <activity android:name=".SignInActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:label="Login"
+            android:screenOrientation="locked"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            />
         <activity android:name=".ForgotPassword"
+            android:label="Forgot password"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme"/>
         <activity android:name=".DonorSignUp"
+            android:label="Sign Up"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme"/>
         <activity android:name=".HospitalSignUp"
+            android:label="Sign Up"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme"/>
     </application>
 
