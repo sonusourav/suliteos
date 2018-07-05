@@ -21,7 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="locked"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
