@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="correct_format_color">#05DDBC</color>
+    <color name="wrong_credentials_color">#ec0615</color>
+    <color name="text_blue">#0563C3</color>
+    <color name="grey">#646566</color>
+    <color name="back_grey">#f9fafa</color>
+    <color name="home_back">#f2f4f5</color>
+    <color name="lbl_email">#333333</color>
+    <color name="input_login">#222222</color>
+    <color name="input_register">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register_hint">#999999</color>
+    <color name="btn_login_register">#a7e9e9</color>
+    <color name="btn_register">#0D47A1</color>
+    <color name="btn_logut">#ff6861</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="toolbar_title">#ffffff</color>
+    <color name="primary">#37474f</color>
+    <color name="primary_dark">#263238</color>
+    <color name="accent">#78909c</color>
+    <color name="control_normal">#888888</color>
+    <color name="fab_pressed">#546e7a</color>
+    <color name="transparent_30">#E6000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="red">#ed0d09</color>
+    <color name="blue">#051da6</color>
+    <color name="fb_button_pressed">#033a78</color>
+    <color name="fb_button_focused">#295aec</color>
+    <color name="google_button_pressed">#bbbcbc</color>
+    <color name="google_button_focused">#e3e5e9</color>
+    <color name="anonymous_button_pressed">#f13535</color>
+    <color name="anonymous_button_focused">#f9382a</color>
+    <color name="winBackground">#98cb4a</color>
+    <color name="background">#f76d3c</color>
+    <color name="launcher_color">#9df19d</color>
+
+
+</resources>

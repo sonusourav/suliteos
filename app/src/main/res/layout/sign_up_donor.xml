@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/image_background"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="15dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/login_linear_layout"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/login_tv_signIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:text="@string/user_sign_up"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                />
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    >
+
+                    <FrameLayout
+                        android:id="@+id/user_sign_up_frame_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/user_sign_up_name"
+                            android:layout_width="270dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/login_textview"
+                            android:hint="@string/name"
+                            android:inputType="textPersonName"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="45dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:maxLength="35"
+                            android:textStyle="normal"
+                            android:typeface="sans" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/icon_new_user" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:id="@+id/user_sign_up_frame_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/user_sign_up_ed_email"
+                            android:layout_width="270dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/login_textview"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="45dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textStyle="normal"
+                            android:typeface="sans" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="TODO"
+                            android:src="@drawable/icon_email" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/user_sign_up_frame_mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/user_sign_up_ed_mobile"
+                            android:layout_width="270dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/login_textview"
+                            android:hint="@string/mobile"
+                            android:inputType="phone"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="45dp"
+                            android:maxLength="10"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textStyle="normal"
+                            android:typeface="sans" />
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/icon_mobile" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/user_sign_up_frame_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="7dp">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:hintEnabled="false"
+                            app:passwordToggleEnabled="true"
+                            app:passwordToggleTint="@color/grey">
+
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/user_sign_up_ed_password"
+                                android:layout_width="270dp"
+                                android:layout_height="45dp"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/login_textview"
+                                android:hint="@string/password"
+                                android:inputType="textPassword"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="45dp"
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/grey"
+                                android:textStyle="normal"
+                                android:typeface="sans" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/password" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/user_sign_up_spinner_blood"
+                            android:layout_width="270dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/login_textview"
+                            android:dropDownSelector="@color/colorPrimary"
+                            android:entries="@array/blood_group"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="45dp"
+                            tools:listheader="Blood Group" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/icon_blood" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/user_sign_up_frame_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/user_sign_up_ed_address"
+                            android:layout_width="270dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/login_textview"
+                            android:hint="@string/address"
+                            android:inputType="textPostalAddress"
+                            android:maxLines="10"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="45dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textStyle="normal"
+                            android:typeface="sans" />
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/icon_address" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/user_sign_up_dod"
+                            android:layout_width="270dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/login_textview"
+                            android:hint="@string/DOD"
+                            android:inputType="date"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="45dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textStyle="normal"
+                            android:typeface="sans"
+                            />
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/icon_syringe" />
+
+                    </FrameLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_sign_up_chk_box"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:shadowColor="@color/black"
+                    android:text="@string/terms"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:id="@+id/user_sign_up_btn"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/curved_button"
+                    android:text="@string/register"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/login_profile_pic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/profile_image"
+            />
+
+    </FrameLayout>
+
+
+</LinearLayout>
+

@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Poshan</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="or_login_with">Or login with</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_without_login">Continue without login</string>
+    <string name="don_t_have_an_account_register_here">Don\'t have an account! Register here</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="dob">Date of Birth</string>
+    <string name="mobile">Mobile No.</string>
+    <string name="terms">Please agree to the terms and conditions.</string>
+    <string name="register">Register</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
+    <string name="search">Search</string>
+    <string name="search_description">City, Cities</string>
+    <string name="menu_search">menu_search</string>
+    <string name="action_settings">action_settings</string>
+    <string name="profession">Profession</string>
+    <string name="amount">amount</string>
+    <string name="like">Like</string>
+    <string name="request_for_money">Request for money</string>
+    <string name="continue_with_facebook">Continue with facebook</string>
+    <string name="user_sign_up">User Sign Up</string>
+    <string name="address">Address</string>
+    <string name="DOD">Last day of donation</string>
+    <string name="hospital_sign_up">Hospital Sign up</string>
+    <string name="monthly_blood_requirement">Monthly blood requirement</string>
+    <string name="person_incharge">Person Incharge</string>
+    <string name="reset_password">RESET PASSWORD</string>
+    <string-array name="blood_group">
+        <item>Blood group</item>
+        <item>O+</item>
+        <item>A+</item>
+        <item>B+</item>
+        <item>AB+</item>
+        <item>O-</item>
+        <item>A-</item>
+        <item>B-</item>
+        <item>AB-</item>
+    </string-array>
+</resources>
