@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item android:id="@+id/nav_home"
+            android:icon="@drawable/icon_home"
+            android:title="Home" />
+        <item android:id="@+id/nav_profile"
+            android:icon="@drawable/icon_new_user"
+            android:title="User Profile" />
+
+    </group>
+
+
+    <item android:title="More">
+        <menu>
+            <item android:id="@+id/nav_Logout"
+                android:icon="@drawable/icon_login"
+                android:title="Logout" />
+            <item android:id="@+id/nav_password"
+                android:icon="@drawable/password"
+                android:title="Update Password" />
+            <item android:id="@+id/nav_terms"
+                android:icon="@drawable/icon_terms"
+                android:title="Terms and Conditons" />
+            <item android:id="@+id/nav_contacts"
+                android:icon="@drawable/icon_contact"
+                android:title="Contact" />
+        </menu>
+    </item>
+</menu>

@@ -46,6 +46,8 @@
             android:screenOrientation="locked"
             android:theme="@style/AppTheme"/>
         <activity android:name=".HospitalSignUp" />
+        <activity android:name=".UpdatePassword" />
+        <activity android:name=".UpdateProfile" />
     </application>
 
 </manifest>

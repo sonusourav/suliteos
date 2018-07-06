@@ -41,6 +41,8 @@ public class DonorSignUp extends AppCompatActivity {
     private EditText donorMobile;
     private EditText donorPassword;
     private EditText donorAddress;
+    private EditText donorDOD;
+
     private Spinner donorBloodGrp;
     private CheckBox donorChkBox;
     String sign_up_email;
@@ -83,6 +85,7 @@ public class DonorSignUp extends AppCompatActivity {
         donorPassword = findViewById(R.id.user_sign_up_ed_password);
         donorBloodGrp = findViewById(R.id.user_sign_up_spinner_blood);
         donorAddress = findViewById(R.id.user_sign_up_ed_address);
+        donorDOD = findViewById(R.id.user_sign_up_dod);
         EditText donorDOD = findViewById(R.id.user_sign_up_dod);
         Button donorSignUpBtn = findViewById(R.id.user_sign_up_btn);
         donorChkBox = findViewById(R.id.user_sign_up_chk_box);
@@ -201,7 +204,7 @@ public class DonorSignUp extends AppCompatActivity {
         sign_up_blood_group = donorBloodGrp.getSelectedItem().toString();
         sign_up_address = donorAddress.getText().toString().trim();
         sign_up_password = donorPassword.getText().toString().trim();
-        sign_up_dod = donorPassword.getText().toString().trim();
+        sign_up_dod = donorDOD.getText().toString().trim();
 
         if (TextUtils.isEmpty(sign_up_name) || (sign_up_name.equals("")) || (sign_up_name == null) || (sign_up_name.length() == 0)) {
             Toast.makeText(getApplicationContext(), "Enter your kind name!", Toast.LENGTH_SHORT).show();

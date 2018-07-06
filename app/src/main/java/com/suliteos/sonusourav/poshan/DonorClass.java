@@ -35,7 +35,7 @@ public class DonorClass {
             return donorEmail;
         }
 
-        public void setDate(String doEmail) {
+        public void setDonorEmail(String doEmail) {
             this.donorEmail = doEmail;
         }
 
@@ -68,14 +68,15 @@ public class DonorClass {
     }
 
     public void setDonorAddress(String doAddress) {
-        this.donorBloodgroup = doAddress;
+        this.donorAddress = doAddress;
     }
+
     public String getDonorDOD() {
         return donorDOD;
     }
 
     public void setDonorDOD(String doDOD) {
-        this.donorBloodgroup = doDOD;
+        this.donorDOD = doDOD;
     }
 
 

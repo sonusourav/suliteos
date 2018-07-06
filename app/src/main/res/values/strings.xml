@@ -38,6 +38,7 @@
 
     <string name="facebook_app_id">2091594821163098</string>
     <string name="fb_login_protocol_scheme">fb2091594821163098</string>
+    <string name="update">Update</string>
 
     <string-array name="blood_group">
         <item>Blood group</item>

@@ -28,7 +28,7 @@
             >
 
             <TextView
-                android:id="@+id/login_tv_signIn"
+                android:id="@+id/update_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -36,7 +36,8 @@
                 android:paddingEnd="15dp"
                 android:paddingStart="15dp"
                 android:paddingTop="10dp"
-                android:text="@string/user_sign_up"
+                android:text="Profile"
+                android:enabled="false"
                 android:textColor="@color/black"
                 android:textSize="30sp"
                 />
@@ -44,7 +45,7 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="300dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 >
@@ -58,14 +59,13 @@
                     >
 
                     <FrameLayout
-                        android:id="@+id/user_sign_up_frame_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/user_sign_up_name"
+                            android:id="@+id/update_name"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -77,6 +77,7 @@
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:maxLength="35"
+                            android:enabled="false"
                             android:textStyle="normal"
                             android:typeface="sans" />
 
@@ -90,14 +91,13 @@
 
 
                     <FrameLayout
-                        android:id="@+id/user_sign_up_frame_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/user_sign_up_ed_email"
+                            android:id="@+id/update_email"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -109,6 +109,7 @@
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
+                            android:enabled="false"
                             android:typeface="sans" />
 
                         <ImageView
@@ -121,14 +122,13 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/user_sign_up_frame_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/user_sign_up_ed_mobile"
+                            android:id="@+id/update_mobile"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -138,6 +138,7 @@
                             android:paddingEnd="10dp"
                             android:paddingStart="45dp"
                             android:maxLength="10"
+                            android:enabled="false"
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
@@ -151,45 +152,8 @@
                             android:src="@drawable/icon_mobile" />
                     </FrameLayout>
 
-                    <FrameLayout
-                        android:id="@+id/user_sign_up_frame_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="7dp">
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:hintEnabled="false"
-                            app:passwordToggleEnabled="true"
-                            app:passwordToggleTint="@color/grey">
-
-                            <android.support.v7.widget.AppCompatEditText
-                                android:id="@+id/user_sign_up_ed_password"
-                                android:layout_width="270dp"
-                                android:layout_height="45dp"
-                                android:layout_gravity="center_vertical"
-                                android:background="@drawable/login_textview"
-                                android:hint="@string/password"
-                                android:inputType="textPassword"
-                                android:paddingEnd="10dp"
-                                android:paddingStart="45dp"
-                                android:textColor="@color/black"
-                                android:textColorHint="@color/grey"
-                                android:textStyle="normal"
-                                android:typeface="sans" />
-
-                        </android.support.design.widget.TextInputLayout>
 
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/password" />
-                    </FrameLayout>
 
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -198,7 +162,7 @@
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatSpinner
-                            android:id="@+id/user_sign_up_spinner_blood"
+                            android:id="@+id/update_blood"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -206,6 +170,7 @@
                             android:dropDownSelector="@color/colorPrimary"
                             android:entries="@array/blood_group"
                             android:paddingEnd="10dp"
+                            android:enabled="false"
                             android:paddingStart="45dp"
                             tools:listheader="Blood Group" />
 
@@ -218,14 +183,13 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/user_sign_up_frame_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/user_sign_up_ed_address"
+                            android:id="@+id/update_address"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -238,6 +202,7 @@
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
+                            android:enabled="false"
                             android:typeface="sans" />
 
                         <ImageView
@@ -255,7 +220,7 @@
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/user_sign_up_dod"
+                            android:id="@+id/update_DOD"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -268,6 +233,7 @@
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
                             android:typeface="sans"
+                            android:enabled="false"
                             />
 
                         <ImageView
@@ -284,29 +250,24 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal">
 
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/user_sign_up_chk_box"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:padding="10dp"
-                    android:shadowColor="@color/black"
-                    android:text="@string/terms"
-                    android:textColor="@color/black" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:id="@+id/user_sign_up_btn"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/edit_button"
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/curved_button"
-                    android:text="@string/register"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="   Edit   "
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="25sp" />
@@ -332,7 +293,7 @@
     <ProgressBar
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:id="@+id/sign_up_progress_bar"
+        android:id="@+id/update_progress_bar"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="20dp"/>
 </LinearLayout>

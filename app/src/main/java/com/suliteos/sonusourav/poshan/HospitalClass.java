@@ -70,6 +70,7 @@ public class HospitalClass {
     public void setHosAddress(String doAddress) {
         this.hosAddress = doAddress;
     }
+
     public String getHosIncharge() {
         return hosIncharge;
     }
