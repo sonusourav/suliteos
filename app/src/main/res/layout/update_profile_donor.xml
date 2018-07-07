@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/image_background"
+    android:orientation="vertical"
     android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="15dp">
+        android:layout_marginBottom="25dp">
 
 
         <LinearLayout
@@ -27,7 +28,7 @@
             >
 
             <TextView
-                android:id="@+id/login_tv_signIn"
+                android:id="@+id/update_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -35,17 +36,19 @@
                 android:paddingEnd="15dp"
                 android:paddingStart="15dp"
                 android:paddingTop="10dp"
-                android:text="@string/hospital_sign_up"
+                android:text="Profile"
+                android:enabled="false"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="30sp"
                 />
 
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="340dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
+                android:background="#c298ea"
                 >
 
                 <LinearLayout
@@ -57,14 +60,13 @@
                     >
 
                     <FrameLayout
-                        android:id="@+id/hos_sign_up_frame_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/hos_sign_up_ed_name"
+                            android:id="@+id/update_name"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -75,6 +77,8 @@
                             android:paddingStart="45dp"
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
+                            android:maxLength="35"
+                            android:enabled="false"
                             android:textStyle="normal"
                             android:typeface="sans" />
 
@@ -88,14 +92,13 @@
 
 
                     <FrameLayout
-                        android:id="@+id/hos_sign_up_frame_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/hos_sign_up_ed_email"
+                            android:id="@+id/update_email"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -107,6 +110,7 @@
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
+                            android:enabled="false"
                             android:typeface="sans" />
 
                         <ImageView
@@ -119,14 +123,13 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/hos_sign_up_frame_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/hos_sign_up_ed_mobile"
+                            android:id="@+id/update_mobile"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -135,10 +138,11 @@
                             android:inputType="phone"
                             android:paddingEnd="10dp"
                             android:paddingStart="45dp"
+                            android:maxLength="10"
+                            android:enabled="false"
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
-                            android:maxLength="10"
                             android:typeface="sans" />
 
                         <ImageView
@@ -149,87 +153,44 @@
                             android:src="@drawable/icon_mobile" />
                     </FrameLayout>
 
-                    <FrameLayout
-                        android:id="@+id/hos_sign_up_frame_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="7dp">
 
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:hintEnabled="false"
-                            app:passwordToggleEnabled="true"
-                            app:passwordToggleTint="@color/grey">
-
-                            <android.support.v7.widget.AppCompatEditText
-                                android:id="@+id/hos_sign_up_ed_password"
-                                android:layout_width="270dp"
-                                android:layout_height="45dp"
-                                android:layout_gravity="center_vertical"
-                                android:background="@drawable/login_textview"
-                                android:hint="@string/password"
-                                android:inputType="textPassword"
-                                android:paddingEnd="10dp"
-                                android:paddingStart="45dp"
-                                android:textColor="@color/black"
-                                android:textColorHint="@color/grey"
-                                android:textStyle="normal"
-                                android:typeface="sans" />
-
-                        </android.support.design.widget.TextInputLayout>
-
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/password" />
-                    </FrameLayout>
 
 
                     <FrameLayout
-                        android:id="@+id/hos_sign_up_frame_blood"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/hos_sign_up_ed_blood"
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/update_blood"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/login_textview"
-                            android:hint="@string/monthly_blood_requirement"
-                            android:inputType="numberSigned"
-                            android:maxLength="8"
+                            android:dropDownSelector="@color/colorPrimary"
+                            android:entries="@array/blood_group"
                             android:paddingEnd="10dp"
+                            android:enabled="false"
                             android:paddingStart="45dp"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/grey"
-                            android:textStyle="normal"
-                            android:typeface="sans" />
+                            tools:listheader="Blood Group" />
 
                         <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
-                            android:src="@drawable/icon_blood_bank" />
+                            android:src="@drawable/icon_blood" />
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/hos_sign_up_frame_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/hos_sign_up_ed_address"
+                            android:id="@+id/update_address"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -242,6 +203,7 @@
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
+                            android:enabled="false"
                             android:typeface="sans" />
 
                         <ImageView
@@ -249,91 +211,92 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
-                            android:src="@drawable/icon_hospital" />
+                            android:src="@drawable/icon_address" />
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/hos_sign_up_frame_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/hos_sign_up_ed_incharge"
+                            android:id="@+id/update_DOD"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/login_textview"
-                            android:hint="@string/person_incharge"
-                            android:inputType="textPersonName"
+                            android:hint="@string/DOD"
+                            android:inputType="date"
                             android:paddingEnd="10dp"
                             android:paddingStart="45dp"
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
                             android:textStyle="normal"
-                            android:typeface="sans" />
+                            android:typeface="sans"
+                            android:enabled="false"
+                            />
 
                         <ImageView
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
-                            android:src="@drawable/icon_incharge" />
+                            android:src="@drawable/icon_syringe" />
+
                     </FrameLayout>
                 </LinearLayout>
             </ScrollView>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <android.support.v7.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/hos_sign_up_chk_box"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="5dp"
-                        android:padding="10dp"
-                        android:shadowColor="@color/black"
-                        android:text="@string/terms"
-                        android:textColor="@color/black" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal">
 
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:id="@+id/hos_sign_up_btn"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/curved_button"
-                        android:text="@string/register"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
 
-                </LinearLayout>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/edit_button"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/curved_button"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="   Edit   "
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
+
+
+            </LinearLayout>
 
 
 
         </LinearLayout>
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/hos_sign_up_pic"
-            android:layout_width="80dp"
+            android:id="@+id/login_profile_pic"
+            android:layout_width="70dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/icon_hospital_sign"
+            android:src="@drawable/icon_upload"
+
             />
+        <ProgressBar
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/update_progress_bar"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"/>
 
     </FrameLayout>
-    <ProgressBar
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/sign_up_progress_bar"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"/>
+
 
 </LinearLayout>
 

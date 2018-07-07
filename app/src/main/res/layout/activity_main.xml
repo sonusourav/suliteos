@@ -19,8 +19,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#9abeca"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/navigation_items"
-        />
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/white"
+       />
 
 </android.support.v4.widget.DrawerLayout>

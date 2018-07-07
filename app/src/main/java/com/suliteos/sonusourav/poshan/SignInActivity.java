@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +25,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -41,19 +44,22 @@ public class SignInActivity extends AppCompatActivity {
     private TextView register;
     String signInUsername;
     String signInPassword;
-    public static String PREFS_NAME = "mypref";
-    public static String PREF_USERNAME = "username";
-    public static String PREF_PASSWORD = "password";
-    public static SharedPreferences.Editor editor;
-    public static String isLoggedIn = "false";
+    public static String POSHAN_PREFS_NAME = "mypref";
+    public static String POSHAN_LOGIN_TYPE="donor";
+    public static String POSHAN_PREF_USERNAME = "username";
+    public static String POSHAN_PREF_PASSWORD = "password";
+    public static SharedPreferences.Editor poshanEditor;
+    private SharedPreferences poshanPref;
+    public static String Poshan_isLoggedIn = "false";
     public static String TAG;
-    private SharedPreferences pref;
     private static long back_pressed;
     private ActionBar signInActionar;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private ProgressBar progressBar;
+    private ProgressBar signInProgressBar;
     private int counter = 5;
+    private  DatabaseReference databaseReference;
+    private DatabaseReference donorRef;
 
 
 
@@ -67,6 +73,8 @@ public class SignInActivity extends AppCompatActivity {
         }
 
 
+        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users");
+        donorRef =databaseReference.child("Donor").getRef();
 
 
         sign_in_username=findViewById(R.id.ed_user_name);
@@ -77,18 +85,22 @@ public class SignInActivity extends AppCompatActivity {
         sign_in_fb=findViewById(R.id.fb_sign_in_button);
         sign_in_google=findViewById(R.id.google_sign_in_button);
         register=findViewById(R.id.sign_in_register);
-        pref = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
-        editor = pref.edit();
-        editor.putString(isLoggedIn, "false");
-        progressBar=findViewById(R.id.sign_in_progress_bar);
+        signInProgressBar =findViewById(R.id.sign_in_progress_bar);
         firebaseAuth = FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
 
+
+        poshanPref = getApplicationContext().getSharedPreferences(POSHAN_PREFS_NAME, 0);
+        poshanEditor = poshanPref.edit();
+        poshanEditor.putString(Poshan_isLoggedIn, "false");
 
         sign_in_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                sign_in_button.setEnabled(false);
+
+                signInProgressBar.setVisibility(View.VISIBLE);
 
 
                 signInUsername = sign_in_username.getText().toString().trim();
@@ -105,17 +117,12 @@ public class SignInActivity extends AppCompatActivity {
                 }
 
 
-                if (sign_in_chk_box.isChecked()) {
-                    editor.putString(isLoggedIn, "true");
-                    editor.putString(PREF_USERNAME, signInUsername);
-                    editor.putString(PREF_PASSWORD, signInPassword);
-                    editor.apply();
-                    }
+
 
                     validate(signInUsername,signInPassword);
 
                             }
-        });
+                            });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +166,7 @@ public class SignInActivity extends AppCompatActivity {
         sign_in_chk_box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                forgot_pass.setTextColor(getResources().getColor(R.color.black));
+                sign_in_chk_box.setTextColor(getResources().getColor(R.color.black));
 
             }
         });
@@ -190,29 +197,66 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    static String encodeUserEmail(String userEmail) {
+        return userEmail.replace(".", ",");
+    }
 
 
 
-    private void validate(String userName, String userPassword){
+    private void validate(final String userName, String userPassword){
 
-        progressBar.setVisibility(View.VISIBLE);
 
         firebaseAuth.signInWithEmailAndPassword(userName, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+
+                    donorRef.child(encodeUserEmail(userName)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                            poshanEditor.putString(POSHAN_LOGIN_TYPE,"donor");
+                            poshanEditor.apply();
+                            Log.d(POSHAN_LOGIN_TYPE,"donor");
+                            }else {
+                                poshanEditor.putString(POSHAN_LOGIN_TYPE,"hospital");
+                                Log.d(POSHAN_LOGIN_TYPE,"hospital");
+                                poshanEditor.apply();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            FirebaseAuth.getInstance().signOut();
+                            Toast.makeText(SignInActivity.this, "Login Failed\n Please try again.", Toast.LENGTH_SHORT).show();
+                            counter--;
+                            sign_in_username.setText("");
+                            sign_in_password.setText("");
+
+                        }
+                    });
+
+
+                    if (sign_in_chk_box.isChecked()) {
+                        Log.d("Shared Pref","working");
+                        poshanEditor.putString(Poshan_isLoggedIn, "true");
+                        poshanEditor.putString(POSHAN_PREF_USERNAME, signInUsername);
+                        poshanEditor.putString(POSHAN_PREF_PASSWORD, signInPassword);
+                        poshanEditor.apply();
+                    }
                     checkEmailVerification();
-                    progressBar.setVisibility(View.GONE);
+                    signInProgressBar.setVisibility(View.GONE);
 
                 }else{
                     Toast.makeText(SignInActivity.this, "Login Failed\n Please check your email or password", Toast.LENGTH_SHORT).show();
                     counter--;
                     Toast.makeText(SignInActivity.this, "No. of attempts remaining: " + counter, Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
                     if(counter == 0){
                         sign_in_button.setEnabled(false);
                     }
                 }
+                signInProgressBar.setVisibility(View.GONE);
+
             }
         });
     }
@@ -224,7 +268,6 @@ public class SignInActivity extends AppCompatActivity {
             if (emailFlag){
                 Toast.makeText(getApplicationContext(),"Signed In successfully",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(SignInActivity.this,MainActivity.class);
-                intent.putExtra("userEmail",signInUsername);
                 startActivity(intent);
 
                 finish();
@@ -236,9 +279,22 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
+    public void onBackPressed() {
+        if (back_pressed + 2000 > System.currentTimeMillis()) {
+            moveTaskToBack(true);
+        } else
+            Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();
+        back_pressed = System.currentTimeMillis();
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
+        forgot_pass.setTextColor(getResources().getColor(R.color.grey));
+        register.setTextColor(getResources().getColor(R.color.grey));
+        sign_in_chk_box.setTextColor(getResources().getColor(R.color.grey));
+        sign_in_button.setEnabled(true);
     }
 
 }

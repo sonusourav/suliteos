@@ -10,11 +10,11 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="15dp">
+        android:layout_marginBottom="35dp">
 
 
         <LinearLayout
@@ -28,26 +28,27 @@
             >
 
             <TextView
-                android:id="@+id/update_profile"
+                android:id="@+id/update_profile_hospital"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp"
                 android:paddingEnd="15dp"
                 android:paddingStart="15dp"
-                android:paddingTop="10dp"
-                android:text="Profile"
+                android:paddingTop="7dp"
+                android:text="Hospital Profile"
                 android:enabled="false"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 />
 
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="340dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
+                android:background="#c298ea"
                 >
 
                 <LinearLayout
@@ -65,7 +66,7 @@
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/update_name"
+                            android:id="@+id/update_name_hospital"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -97,7 +98,7 @@
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/update_email"
+                            android:id="@+id/update_email_hospital"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -117,7 +118,6 @@
                             android:layout_height="25dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
-                            android:contentDescription="TODO"
                             android:src="@drawable/icon_email" />
                     </FrameLayout>
 
@@ -128,7 +128,7 @@
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/update_mobile"
+                            android:id="@+id/update_mobile_hospital"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -161,25 +161,28 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp">
 
-                        <android.support.v7.widget.AppCompatSpinner
-                            android:id="@+id/update_blood"
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/update_blood_hospital"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/login_textview"
-                            android:dropDownSelector="@color/colorPrimary"
-                            android:entries="@array/blood_group"
+                            android:hint="@string/monthly_blood_requirement"
+                            android:inputType="numberSigned"
+                            android:maxLength="8"
                             android:paddingEnd="10dp"
-                            android:enabled="false"
                             android:paddingStart="45dp"
-                            tools:listheader="Blood Group" />
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textStyle="normal"
+                            android:typeface="sans" />
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
-                            android:src="@drawable/icon_blood" />
+                            android:src="@drawable/icon_blood_bank" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -189,7 +192,7 @@
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/update_address"
+                            android:id="@+id/update_address_hospital"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
@@ -220,12 +223,12 @@
                         android:layout_marginTop="10dp">
 
                         <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/update_DOD"
+                            android:id="@+id/update_incharge_hospital"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/login_textview"
-                            android:hint="@string/DOD"
+                            android:hint="@string/person_incharge"
                             android:inputType="date"
                             android:paddingEnd="10dp"
                             android:paddingStart="45dp"
@@ -241,7 +244,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
-                            android:src="@drawable/icon_syringe" />
+                            android:src="@drawable/icon_incharge" />
 
                     </FrameLayout>
                 </LinearLayout>
@@ -257,11 +260,11 @@
 
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
-                    android:id="@+id/edit_button"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
+                    android:id="@+id/edit_button_hospital"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/curved_button"
@@ -270,7 +273,7 @@
                     android:text="   Edit   "
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
 
 
             </LinearLayout>
@@ -293,7 +296,7 @@
     <ProgressBar
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:id="@+id/update_progress_bar"
+        android:id="@+id/update_progress_bar_hospital"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="20dp"/>
 </LinearLayout>

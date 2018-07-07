@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +41,7 @@ public class HospitalSignUp extends AppCompatActivity {
     String sign_up_address;
     String sign_up_incharge;
 
+    private ProgressBar hosProgressBar;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference userReference;
     private DatabaseReference donorReference;
@@ -72,11 +74,14 @@ public class HospitalSignUp extends AppCompatActivity {
         hosIncharge=findViewById(R.id.hos_sign_up_ed_incharge);
         Button hosSignUpBtn = findViewById(R.id.hos_sign_up_btn);
         hosChkBox = findViewById(R.id.hos_sign_up_chk_box);
+        hosProgressBar=findViewById(R.id.sign_up_progress_bar);
+
 
         hosSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                hosProgressBar.setVisibility(View.VISIBLE);
 
                 if(validateInputs())
                 {
@@ -90,8 +95,10 @@ public class HospitalSignUp extends AppCompatActivity {
                             }
 
                             else{
+                                hosProgressBar.setVisibility(View.GONE);
                                 Toast.makeText(HospitalSignUp.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                             }
+
                         }
                     });
 
@@ -208,12 +215,15 @@ public class HospitalSignUp extends AppCompatActivity {
                     if (task.isSuccessful()){
                         sendUserData();
                         firebaseAuth.signOut();
+
                         Toast.makeText(HospitalSignUp.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(HospitalSignUp.this, SignInActivity.class));
                     }else {
-                        Toast.makeText(HospitalSignUp.this, "Verification mail has'nt been sent!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(HospitalSignUp.this, SignInActivity.class));
+                        Toast.makeText(HospitalSignUp.this, "Verification mail hasn't been sent!", Toast.LENGTH_SHORT).show();
                     }
+
+                    startActivity(new Intent(HospitalSignUp.this, SignInActivity.class));
+                    hosProgressBar.setVisibility(View.GONE);
+
                 }
             });
         }
@@ -262,8 +272,6 @@ public class HospitalSignUp extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
-
-
 
 
 

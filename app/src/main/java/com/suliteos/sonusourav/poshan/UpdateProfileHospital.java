@@ -9,11 +9,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,21 +24,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.util.Calendar;
-
-/**
- * Created by SONU SOURAV on 3/17/2018.
- */
-
-public class UpdateProfile extends AppCompatActivity {
-
-    android.support.v7.app.ActionBar settingsActionbar;
-    Button editButton;
-    MenuItem save;
-    Calendar profileCalender;
-    FirebaseUser user;
-    private EditText profileName, profileEmail, profilePhone, profileAddress, profileDOD;
-    private Spinner profileBlood;
+public class UpdateProfileHospital extends AppCompatActivity {
+    android.support.v7.app.ActionBar UpdateHosActionBar;
+    private Button editButton;
+    private MenuItem save;
+    private FirebaseUser user;
+    private EditText profileHosName, profileHosEmail, profileHosPhone, profileHosAddress, profileHosIncharge;
+    private EditText profileHosBlood;
     private FirebaseAuth profileauth;
     private FirebaseDatabase profilefirebaseInstance;
     private FirebaseStorage profilefirestoreInstance;
@@ -47,8 +38,7 @@ public class UpdateProfile extends AppCompatActivity {
     private DatabaseReference profileuserIdRef;
     private DatabaseReference profileEmailRef;
     private String userEmail;
-    private ImageView verifyImage;
-    ProgressBar profileProgressbar;
+    private ProgressBar profileHosProgressbar;
 
 
     static String encodeUserEmail(String userEmail) {
@@ -59,48 +49,41 @@ public class UpdateProfile extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.update_profile);
-        profileName = findViewById(R.id.update_name);
-        profileEmail = findViewById(R.id.update_email);
-        profilePhone = findViewById(R.id.update_mobile);
-        profileBlood = findViewById(R.id.update_blood);
-        profileAddress = findViewById(R.id.update_address);
-        profileDOD = findViewById(R.id.update_DOD);
-
-        editButton = findViewById(R.id.edit_button);
-        profileProgressbar=findViewById(R.id.update_progress_bar);
+        setContentView(R.layout.update_profile_hospital);
+        profileHosName = findViewById(R.id.update_name_hospital);
+        profileHosEmail = findViewById(R.id.update_email_hospital);
+        profileHosPhone = findViewById(R.id.update_mobile_hospital);
+        profileHosBlood = findViewById(R.id.update_blood_hospital);
+        profileHosAddress = findViewById(R.id.update_address_hospital);
+        profileHosIncharge = findViewById(R.id.update_incharge_hospital);
+        editButton = findViewById(R.id.edit_button_hospital);
+        profileHosProgressbar =findViewById(R.id.update_progress_bar_hospital);
 
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
 
-        profileProgressbar.setVisibility(View.VISIBLE);
-        profileBlood.setEnabled(false);
+        profileHosProgressbar.setVisibility(View.VISIBLE);
         profileauth = FirebaseAuth.getInstance();
         profilefirestoreInstance = FirebaseStorage.getInstance();
         profilefirebaseInstance = FirebaseDatabase.getInstance();
         profilerootRef = profilefirebaseInstance.getReference("Users");
-        profileuserIdRef = profilerootRef.child("Donor");
+        profileuserIdRef = profilerootRef.child("Hospital");
         user = FirebaseAuth.getInstance().getCurrentUser();
         String testEmail = encodeUserEmail(user.getEmail());
         profileEmailRef = profileuserIdRef.child(testEmail).getRef();
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileName.setEnabled(true);
-                profileName.setFocusable(true);
-                profileEmail.setEnabled(true);
-                profileEmail.setFocusable(true);
-                profileAddress.setFocusable(true);
-                profileDOD.setFocusable(true);
-                profilePhone.setFocusable(true);
-                profileBlood.setFocusable(true);
-                profilePhone.setFocusable(true);
-                profileBlood.setEnabled(true);
-                profileAddress.setEnabled(true);
-                profileDOD.setEnabled(true);
+                profileHosName.setEnabled(true);
+                profileHosEmail.setEnabled(true);
+                profileHosEmail.setFocusable(false);
+                profileHosBlood.setEnabled(true);
+                profileHosAddress.setEnabled(true);
+                profileHosIncharge.setEnabled(true);
                 save.setEnabled(true);
             }
         });
@@ -111,11 +94,11 @@ public class UpdateProfile extends AppCompatActivity {
 
 
 
-        profileEmailRef.child("donorName").addListenerForSingleValueEvent(new ValueEventListener() {
+        profileEmailRef.child("hosName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String nvalue = dataSnapshot.getValue(String.class);
-                profileName.setText(nvalue);
+                profileHosName.setText(nvalue);
             }
 
             @Override
@@ -123,11 +106,11 @@ public class UpdateProfile extends AppCompatActivity {
             }
         });
 
-        profileEmailRef.child("donorEmail").addListenerForSingleValueEvent(new ValueEventListener() {
+        profileEmailRef.child("hosEmail").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String dvalue = dataSnapshot.getValue(String.class);
-                profileEmail.setText(dvalue);
+                profileHosEmail.setText(dvalue);
             }
 
             @Override
@@ -135,28 +118,12 @@ public class UpdateProfile extends AppCompatActivity {
             }
         });
 
-        profileEmailRef.child("donorBloodgroup").addListenerForSingleValueEvent(new ValueEventListener() {
+        profileEmailRef.child("hosBlood").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String gvalue = dataSnapshot.getValue(String.class);
+                profileHosBlood.setText(gvalue);
 
-                assert gvalue != null;
-                if (gvalue.equals("O+"))
-                    profileBlood.setSelection(1);
-                else if(gvalue.equals("A+"))
-                    profileBlood.setSelection(2);
-                else if(gvalue.equals("B+"))
-                    profileBlood.setSelection(3);
-                else if(gvalue.equals("AB+"))
-                    profileBlood.setSelection(4);
-                else if(gvalue.equals("O-"))
-                    profileBlood.setSelection(5);
-                else if(gvalue.equals("A-"))
-                    profileBlood.setSelection(6);
-                else if(gvalue.equals("B-"))
-                    profileBlood.setSelection(7);
-                else if(gvalue.equals("AB-"))
-                    profileBlood.setSelection(8);
 
             }
 
@@ -167,11 +134,11 @@ public class UpdateProfile extends AppCompatActivity {
 
 
 
-        profileEmailRef.child("donorMobile").addListenerForSingleValueEvent(new ValueEventListener() {
+        profileEmailRef.child("hosMobile").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String evalue = dataSnapshot.getValue(String.class);
-                profilePhone.setText(evalue);
+                profileHosPhone.setText(evalue);
             }
 
             @Override
@@ -183,7 +150,7 @@ public class UpdateProfile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String pvalue = dataSnapshot.getValue(String.class);
-                profileAddress.setText(pvalue);
+                profileHosAddress.setText(pvalue);
             }
 
             @Override
@@ -191,17 +158,17 @@ public class UpdateProfile extends AppCompatActivity {
             }
         });
 
-        profileEmailRef.child("donorDOD").addListenerForSingleValueEvent(new ValueEventListener() {
+        profileEmailRef.child("hosIncharge").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String mvalue = dataSnapshot.getValue(String.class);
-                profileDOD.setText(mvalue);
-                profileProgressbar.setVisibility(View.INVISIBLE);
+                profileHosIncharge.setText(mvalue);
+                profileHosProgressbar.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                profileProgressbar.setVisibility(View.INVISIBLE);
+                profileHosProgressbar.setVisibility(View.GONE);
 
             }
         });
@@ -212,12 +179,11 @@ public class UpdateProfile extends AppCompatActivity {
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
-       /* MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_button_profile, menu);*/
-        assert settingsActionbar != null;
-        settingsActionbar = getSupportActionBar();
-        settingsActionbar.setHomeButtonEnabled(true);
-        settingsActionbar.setDisplayHomeAsUpEnabled(true);
+
+        assert UpdateHosActionBar != null;
+        UpdateHosActionBar = getSupportActionBar();
+        UpdateHosActionBar.setHomeButtonEnabled(true);
+        UpdateHosActionBar.setDisplayHomeAsUpEnabled(true);
         return super.onCreateOptionsMenu(menu);
 
 
@@ -253,12 +219,12 @@ public class UpdateProfile extends AppCompatActivity {
 
     public void Update(MenuItem item) {
 
-        final String pname = profileName.getText().toString().trim();
-        final String pemail = profileEmail.getText().toString().trim();
-        final String pmobile = profilePhone.getText().toString().trim();
-        final String pblood = profileBlood.getSelectedItem().toString();
-        final String paddress = profileAddress.getText().toString().trim();
-        final String pdod = profileDOD.getText().toString().trim();
+        final String pname = profileHosName.getText().toString().trim();
+        final String pemail = profileHosEmail.getText().toString().trim();
+        final String pmobile = profileHosPhone.getText().toString().trim();
+        final String pblood = profileHosBlood.getText().toString().trim();
+        final String paddress = profileHosAddress.getText().toString().trim();
+        final String pincharge = profileHosIncharge.getText().toString().trim();
 
         if (profileauth.getCurrentUser() != null) {
 
@@ -275,16 +241,17 @@ public class UpdateProfile extends AppCompatActivity {
                     dataSnapshot.getRef().child("donorMobile").setValue(pmobile);
                     dataSnapshot.getRef().child("donorBlood").setValue(pblood);
                     dataSnapshot.getRef().child("donorAddress").setValue(paddress);
-                    dataSnapshot.getRef().child("donorDOD").setValue(pdod);
+                    dataSnapshot.getRef().child("donorDOD").setValue(pincharge);
 
-                    profileName.setEnabled(false);
-                    profileEmail.setEnabled(false);
-                    profilePhone.setEnabled(false);
-                    profileBlood.setEnabled(false);
-                    profileAddress.setEnabled(false);
-                    profileDOD.setEnabled(false);
+                    profileHosName.setEnabled(false);
+                    profileHosEmail.setEnabled(false);
+                    profileHosPhone.setEnabled(false);
+                    profileHosBlood.setEnabled(false);
+                    profileHosAddress.setEnabled(false);
+                    profileHosIncharge.setEnabled(false);
 
                     save.setEnabled(false);
+                    profileHosProgressbar.setVisibility(View.GONE);
 
 
                 }
@@ -292,12 +259,14 @@ public class UpdateProfile extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.d("User", databaseError.getMessage());
+                    profileHosProgressbar.setVisibility(View.GONE);
+
                 }
 
             });
 
 
-            Intent intent = new Intent(UpdateProfile.this, MainActivity.class);
+            Intent intent = new Intent(UpdateProfileHospital.this, MainActivity.class);
             startActivity(intent);
 
         }
