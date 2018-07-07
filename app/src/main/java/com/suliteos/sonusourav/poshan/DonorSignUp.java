@@ -1,13 +1,18 @@
 package com.suliteos.sonusourav.poshan;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,21 +21,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class DonorSignUp extends AppCompatActivity {
@@ -58,8 +73,23 @@ public class DonorSignUp extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference userReference;
-    private DatabaseReference donorReference;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    private StorageReference donorReference;
     private DatabaseReference hospitalReference;
+
+//image upload
+    private static int PICK_IMAGE = 123;
+    private Uri mImageUri;
+
+
+
+    private static Bitmap Image = null;
+    private static Bitmap rotateImage = null;
+    private CircleImageView userProfilePic;
+    private static final int GALLERY = 1;
+
+
 
 
     @Override
@@ -72,8 +102,11 @@ public class DonorSignUp extends AppCompatActivity {
         }
 
 
+        firebaseStorage =FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+        donorReference=storageReference.child("Users").child("Donor");
+
         userReference= FirebaseDatabase.getInstance().getReference().child("Users");
-        donorReference=userReference.child("Donor");
         hospitalReference=userReference.child("Hospital");
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -94,6 +127,7 @@ public class DonorSignUp extends AppCompatActivity {
         );
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
         donorBloodGrp.setAdapter(spinnerArrayAdapter);
+        userProfilePic =findViewById(R.id.login_profile_pic);
 
 
         donorSignUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +157,45 @@ public class DonorSignUp extends AppCompatActivity {
             }
         });
 
+
+        userProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userProfilePic.setImageBitmap(null);
+                if (Image != null)
+                    Image.recycle();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY);
+            }
+        });
+
+
+
     }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == GALLERY && resultCode != 0) {
+            mImageUri = data.getData();
+            try {
+                Image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
+                userProfilePic.setImageBitmap(Image);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
 
 
     //send email Verification
@@ -134,9 +206,8 @@ public class DonorSignUp extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
-                        sendUserData();
-                        firebaseAuth.signOut();
                         Toast.makeText(DonorSignUp.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_SHORT).show();
+                        sendUserData();
                     }else {
                         Toast.makeText(DonorSignUp.this, "Verification mail has'nt been sent!", Toast.LENGTH_SHORT).show();
                     }
@@ -144,6 +215,43 @@ public class DonorSignUp extends AppCompatActivity {
 
                 }
             });
+        }
+    }
+
+
+    private void uploadImage() {
+
+        if( mImageUri != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = donorReference.child(encodeUserEmail(sign_up_email)).child("images");
+            ref.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(DonorSignUp.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(DonorSignUp.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("Upload failure",e.getMessage());
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
         }
     }
 
@@ -160,7 +268,7 @@ public class DonorSignUp extends AppCompatActivity {
         DonorClass userprofile =new DonorClass(sign_up_name,sign_up_email,sign_up_mobile,sign_up_password,sign_up_blood_group,sign_up_address,sign_up_dod);
         myRef.setValue(userprofile);
         Toast.makeText(getApplicationContext(),"sending userdata",Toast.LENGTH_SHORT).show();
-
+        uploadImage();
 
     }
 

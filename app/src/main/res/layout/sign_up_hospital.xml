@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/image_background"
-    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="15dp">
+        android:layout_marginBottom="35dp">
 
 
         <LinearLayout
@@ -44,8 +45,8 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
-                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
+                android:background="#c298ea"
                 >
 
                 <LinearLayout
@@ -306,7 +307,6 @@
                         android:id="@+id/hos_sign_up_btn"
                         android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/curved_button"
                         android:text="@string/register"
@@ -321,6 +321,8 @@
         </LinearLayout>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/hos_sign_up_pic"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="2dp"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
@@ -333,7 +335,7 @@
         android:layout_height="30dp"
         android:id="@+id/sign_up_progress_bar"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>
 

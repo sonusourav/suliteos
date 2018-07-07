@@ -1,12 +1,17 @@
 package com.suliteos.sonusourav.poshan;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,15 +23,24 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HospitalSignUp extends AppCompatActivity {
 
@@ -46,6 +60,19 @@ public class HospitalSignUp extends AppCompatActivity {
     private DatabaseReference userReference;
     private DatabaseReference donorReference;
     private DatabaseReference hospitalReference;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+
+    //image upload
+    private static int PICK_IMAGE = 123;
+    private Uri mImageUri;
+
+
+
+    private static Bitmap Image = null;
+    private static Bitmap rotateImage = null;
+    private CircleImageView userProfilePic;
+    private static final int GALLERY = 1;
 
 
     @Override
@@ -58,6 +85,8 @@ public class HospitalSignUp extends AppCompatActivity {
         }
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference().child("Users").child("Hospital");
         userReference= FirebaseDatabase.getInstance().getReference().child("Users");
         donorReference=userReference.child("Donor");
         hospitalReference=userReference.child("Hospital");
@@ -75,6 +104,7 @@ public class HospitalSignUp extends AppCompatActivity {
         Button hosSignUpBtn = findViewById(R.id.hos_sign_up_btn);
         hosChkBox = findViewById(R.id.hos_sign_up_chk_box);
         hosProgressBar=findViewById(R.id.sign_up_progress_bar);
+        userProfilePic=findViewById(R.id.hos_sign_up_pic);
 
 
         hosSignUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -104,11 +134,79 @@ public class HospitalSignUp extends AppCompatActivity {
 
                 }
 
-
             }
         });
+
+        userProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userProfilePic.setImageBitmap(null);
+                if (Image != null)
+                    Image.recycle();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY);
+            }
+        });
+
+
     }
 
+
+
+    private void uploadImage() {
+
+        if( mImageUri != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child(encodeUserEmail(sign_up_email)).child("images");
+            ref.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(HospitalSignUp.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(HospitalSignUp.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("Upload failure",e.getMessage());
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == GALLERY && resultCode != 0) {
+            mImageUri = data.getData();
+            try {
+                Image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
+                userProfilePic.setImageBitmap(Image);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
     public boolean validateInputs(){
 
@@ -200,6 +298,7 @@ public class HospitalSignUp extends AppCompatActivity {
 
         HospitalClass userprofile =new HospitalClass(sign_up_name,sign_up_email,sign_up_mobile,sign_up_password,sign_up_blood,sign_up_address,sign_up_incharge);
         myRef.setValue(userprofile);
+        uploadImage();
         Toast.makeText(getApplicationContext(),"sending userdata",Toast.LENGTH_SHORT).show();
 
 

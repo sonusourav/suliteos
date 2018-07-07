@@ -98,9 +98,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sign_in_button.setEnabled(false);
 
-                signInProgressBar.setVisibility(View.VISIBLE);
 
 
                 signInUsername = sign_in_username.getText().toString().trim();
@@ -117,6 +115,7 @@ public class SignInActivity extends AppCompatActivity {
                 }
 
 
+                signInProgressBar.setVisibility(View.VISIBLE);
 
 
                     validate(signInUsername,signInPassword);
@@ -218,22 +217,26 @@ public class SignInActivity extends AppCompatActivity {
                             poshanEditor.putString(POSHAN_LOGIN_TYPE,"donor");
                             poshanEditor.apply();
                             Log.d(POSHAN_LOGIN_TYPE,"donor");
+                                sign_in_button.setEnabled(false);
+
                             }else {
                                 poshanEditor.putString(POSHAN_LOGIN_TYPE,"hospital");
                                 Log.d(POSHAN_LOGIN_TYPE,"hospital");
                                 poshanEditor.apply();
+
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(SignInActivity.this, "Login Failed "+ databaseError + "\nPlease try again.", Toast.LENGTH_SHORT).show();
                             FirebaseAuth.getInstance().signOut();
-                            Toast.makeText(SignInActivity.this, "Login Failed\n Please try again.", Toast.LENGTH_SHORT).show();
                             counter--;
                             sign_in_username.setText("");
                             sign_in_password.setText("");
 
                         }
+
                     });
 
 

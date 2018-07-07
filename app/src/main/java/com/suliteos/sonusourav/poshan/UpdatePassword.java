@@ -68,6 +68,9 @@ public class UpdatePassword extends AppCompatActivity {
                                                 poshanEditor.putString(POSHAN_PREF_PASSWORD, newPass);
                                                 poshanEditor.apply();
 
+
+
+
                                                 Toast.makeText(getApplicationContext(),"Password successfully updated",Toast.LENGTH_SHORT).show();
                                                 Log.d("Update Password", "Password updated");
                                                 startActivity(new Intent(UpdatePassword.this,MainActivity.class));

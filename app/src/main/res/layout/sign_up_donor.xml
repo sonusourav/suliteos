@@ -47,6 +47,7 @@
                 android:layout_height="280dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
+                android:background="#c298ea"
                 >
 
                 <LinearLayout
@@ -321,6 +322,8 @@
             android:id="@+id/login_profile_pic"
             android:layout_width="70dp"
             android:layout_height="80dp"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="2dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/icon_upload"
 
