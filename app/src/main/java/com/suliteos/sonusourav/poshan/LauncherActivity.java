@@ -2,11 +2,17 @@ package com.suliteos.sonusourav.poshan;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.appus.splash.Splash;
@@ -28,14 +34,17 @@ import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_PREF_PASSWORD
 import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_PREF_USERNAME;
 import static com.suliteos.sonusourav.poshan.SignInActivity.Poshan_isLoggedIn;
 
-public class LauncherActivity extends AppCompatActivity {
+public class LauncherActivity extends AppCompatActivity implements Animation.AnimationListener {
     public static SharedPreferences.Editor poshanEditor;
     SharedPreferences poshanPref;
     public static String TAG=LauncherActivity.class.getCanonicalName();
     private DatabaseReference databaseReference;
     private DatabaseReference donorRef;
     public static String POSHAN_LOGIN_TYPE="donor";
+    Animation animFadeIn;
 
+    LinearLayout linearLayout;
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,19 +53,46 @@ public class LauncherActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
-        Splash.Builder splash = new Splash.Builder(this, getSupportActionBar());
-        splash.perform();
+
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+        // Remember that you should never show the action bar if the
+        // status bar is hidden, so hide that too if necessary.
+        animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fade_in);
+        // set animation listener
+        animFadeIn.setAnimationListener(this);
+        // animation for image
+        linearLayout = (LinearLayout) findViewById(R.id.launcher_linear_layout);
+        // start the animation
+        linearLayout.startAnimation(animFadeIn);
+
+
+
+      /*  Splash.Builder splash = new Splash.Builder(this, getSupportActionBar());
+        splash.perform();*/
 
         poshanPref = getApplicationContext().getSharedPreferences(POSHAN_PREFS_NAME, 0);
         poshanEditor = poshanPref.edit();
         poshanEditor.putString(Poshan_isLoggedIn, "false");
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Users");
         donorRef =databaseReference.child("Donor").getRef();
 
 //login_in_code
 
+
+    }
+    static String encodeUserEmail(String userEmail) {
+        return userEmail.replace(".", ",");
+    }
+
+
+    @Override
+    public void onAnimationStart(Animation animation) {
         if (Objects.equals(poshanPref.getString(Poshan_isLoggedIn, null), "true")) {
             Log.d(TAG, "Launcher:onCreate: Poshan_isLoggedIn=true");
             final String launcherSignInUsername = poshanPref.getString(POSHAN_PREF_USERNAME, null);
@@ -101,7 +137,7 @@ public class LauncherActivity extends AppCompatActivity {
                                         LauncherActivity.this.startActivity(mainIntent);
                                         LauncherActivity.this.finish();
                                     }
-                                }, 1000);
+                                }, 3500);
 
 
                             } else {
@@ -114,7 +150,7 @@ public class LauncherActivity extends AppCompatActivity {
                                         LauncherActivity.this.startActivity(mainIntent);
                                         LauncherActivity.this.finish();
                                     }
-                                }, 1000);
+                                }, 3500);
                                 Toast.makeText(LauncherActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                             }
@@ -131,17 +167,21 @@ public class LauncherActivity extends AppCompatActivity {
                     LauncherActivity.this.startActivity(mainIntent);
                     LauncherActivity.this.finish();
                 }
-            }, 1000);
+            }, 3500);
 
             Log.d(TAG, "onCreate: Poshan_isLoggedIn=false");
 
         }
 
-
-    }
-    static String encodeUserEmail(String userEmail) {
-        return userEmail.replace(".", ",");
     }
 
+    @Override
+    public void onAnimationEnd(Animation animation) {
 
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
 }
