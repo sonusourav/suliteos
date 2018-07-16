@@ -21,6 +21,7 @@
     <color name="btn_logut">#ff6861</color>
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
     <color name="toolbar_title">#ffffff</color>
     <color name="primary">#37474f</color>
     <color name="primary_dark">#263238</color>
@@ -40,6 +41,5 @@
     <color name="winBackground">#98cb4a</color>
     <color name="background">#f76d3c</color>
     <color name="launcher_color">#9df19d</color>
-
 
 </resources>

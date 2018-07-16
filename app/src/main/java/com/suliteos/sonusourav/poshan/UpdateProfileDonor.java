@@ -1,9 +1,9 @@
 package com.suliteos.sonusourav.poshan;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,10 +55,11 @@ public class UpdateProfileDonor extends AppCompatActivity {
     private DatabaseReference profileuserIdRef;
     private DatabaseReference profileEmailRef;
     private String userEmail;
-    private ImageView verifyImage;
     ProgressBar profileProgressbar;
-
-
+    private ImageView profileImage;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    private String path;
     static String encodeUserEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }
@@ -71,6 +75,7 @@ public class UpdateProfileDonor extends AppCompatActivity {
         profileBlood = findViewById(R.id.update_blood);
         profileAddress = findViewById(R.id.update_address);
         profileDOD = findViewById(R.id.update_DOD);
+        profileImage =findViewById(R.id.update_profile_pic);
 
         editButton = findViewById(R.id.edit_button);
         profileProgressbar=findViewById(R.id.update_progress_bar);
@@ -100,6 +105,7 @@ public class UpdateProfileDonor extends AppCompatActivity {
         );
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
         profileBlood.setAdapter(spinnerArrayAdapter);
+        userEmail = user.getEmail();
 
 
 
@@ -124,10 +130,26 @@ public class UpdateProfileDonor extends AppCompatActivity {
 
 
 
+        firebaseStorage=FirebaseStorage.getInstance();
+         storageReference = firebaseStorage.getReferenceFromUrl(getString(R.string.bucketURL)).child("Users/Donor/"+encodeUserEmail(userEmail)+"/images");
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("donor_URL",uri.toString());
+                path=uri.toString();
+                Glide.with(getApplicationContext())
+                        .load(path)
+                        .into(profileImage);
 
 
-
-
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("imageURL","failure");
+            }
+        });
 
         profileEmailRef.child("donorName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -158,26 +180,36 @@ public class UpdateProfileDonor extends AppCompatActivity {
 
         profileEmailRef.child("donorBloodgroup").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String gvalue = dataSnapshot.getValue(String.class);
 
                 assert gvalue != null;
-                if (gvalue.equals("O+"))
-                    profileBlood.setSelection(1);
-                else if(gvalue.equals("A+"))
-                    profileBlood.setSelection(2);
-                else if(gvalue.equals("B+"))
-                    profileBlood.setSelection(3);
-                else if(gvalue.equals("AB+"))
-                    profileBlood.setSelection(4);
-                else if(gvalue.equals("O-"))
-                    profileBlood.setSelection(5);
-                else if(gvalue.equals("A-"))
-                    profileBlood.setSelection(6);
-                else if(gvalue.equals("B-"))
-                    profileBlood.setSelection(7);
-                else if(gvalue.equals("AB-"))
-                    profileBlood.setSelection(8);
+                switch (gvalue) {
+                    case "O+":
+                        profileBlood.setSelection(1);
+                        break;
+                    case "A+":
+                        profileBlood.setSelection(2);
+                        break;
+                    case "B+":
+                        profileBlood.setSelection(3);
+                        break;
+                    case "AB+":
+                        profileBlood.setSelection(4);
+                        break;
+                    case "O-":
+                        profileBlood.setSelection(5);
+                        break;
+                    case "A-":
+                        profileBlood.setSelection(6);
+                        break;
+                    case "B-":
+                        profileBlood.setSelection(7);
+                        break;
+                    case "AB-":
+                        profileBlood.setSelection(8);
+                        break;
+                }
 
             }
 
@@ -226,6 +258,8 @@ public class UpdateProfileDonor extends AppCompatActivity {
 
             }
         });
+
+
 
 
     }
@@ -283,7 +317,6 @@ public class UpdateProfileDonor extends AppCompatActivity {
 
         if (profileauth.getCurrentUser() != null) {
 
-            userEmail = user.getEmail();
 
 
             profileEmailRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -321,7 +354,7 @@ public class UpdateProfileDonor extends AppCompatActivity {
             });
 
 
-            Intent intent = new Intent(UpdateProfileDonor.this, MainActivity.class);
+            Intent intent = new Intent(UpdateProfileDonor.this, WelcomeActivity.class);
             startActivity(intent);
 
         }

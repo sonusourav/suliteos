@@ -21,9 +21,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,15 +34,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,25 +72,20 @@ public class DonorSignUp extends AppCompatActivity {
     String sign_up_blood_group;
     String sign_up_address;
     String sign_up_dod;
+    private ProgressBar donorProgressBar;
 
 
     //firebase declaration
 
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference userReference;
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageReference;
     private StorageReference donorReference;
-    private DatabaseReference hospitalReference;
-
+    private String imagePath;
 //image upload
-    private static int PICK_IMAGE = 123;
     private Uri mImageUri;
 
 
 
     private static Bitmap Image = null;
-    private static Bitmap rotateImage = null;
     private CircleImageView userProfilePic;
     private static final int GALLERY = 1;
 
@@ -102,12 +102,10 @@ public class DonorSignUp extends AppCompatActivity {
         }
 
 
-        firebaseStorage =FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
-        donorReference=storageReference.child("Users").child("Donor");
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        donorReference= storageReference.child("Users").child("Donor");
 
-        userReference= FirebaseDatabase.getInstance().getReference().child("Users");
-        hospitalReference=userReference.child("Hospital");
         firebaseAuth = FirebaseAuth.getInstance();
 
 
@@ -119,21 +117,21 @@ public class DonorSignUp extends AppCompatActivity {
         donorBloodGrp = findViewById(R.id.user_sign_up_spinner_blood);
         donorAddress = findViewById(R.id.user_sign_up_ed_address);
         donorDOD = findViewById(R.id.user_sign_up_dod);
-        EditText donorDOD = findViewById(R.id.user_sign_up_dod);
         Button donorSignUpBtn = findViewById(R.id.user_sign_up_btn);
         donorChkBox = findViewById(R.id.user_sign_up_chk_box);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(
                 this, R.layout.spinner_item, getResources().getStringArray(R.array.blood_group)
         );
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
         donorBloodGrp.setAdapter(spinnerArrayAdapter);
         userProfilePic =findViewById(R.id.login_profile_pic);
-
+        donorProgressBar=findViewById(R.id.donor_sign_up_progress_bar);
 
         donorSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                donorProgressBar.setVisibility(View.VISIBLE);
                 if(validateInputs())
                 {
 
@@ -146,6 +144,7 @@ public class DonorSignUp extends AppCompatActivity {
                             }
 
                             else{
+                                donorProgressBar.setVisibility(View.GONE);
                                 Toast.makeText(DonorSignUp.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -212,6 +211,7 @@ public class DonorSignUp extends AppCompatActivity {
                         Toast.makeText(DonorSignUp.this, "Verification mail has'nt been sent!", Toast.LENGTH_SHORT).show();
                     }
                     startActivity(new Intent(DonorSignUp.this, SignInActivity.class));
+                    donorProgressBar.setVisibility(View.GONE);
 
                 }
             });
@@ -227,20 +227,46 @@ public class DonorSignUp extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = donorReference.child(encodeUserEmail(sign_up_email)).child("images");
-            ref.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            final StorageReference ref = donorReference.child(encodeUserEmail(sign_up_email)).child("images");
+            UploadTask uploadTask = ref.putFile(mImageUri);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // When the image has successfully uploaded, we get its download URL
+                            imagePath = Objects.requireNonNull(taskSnapshot.getMetadata()).getPath();
+                            Log.d("donorImagePath",imagePath);
+
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference rootReference=firebaseDatabase.getReference();
+                            DatabaseReference userReference=rootReference.child("Users").child("Donor");
+                            DatabaseReference myRef = userReference.child(encodeUserEmail(sign_up_email));
+
+                            myRef.child("donorImagePath").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    dataSnapshot.getRef().setValue(imagePath);
+                                    Toast.makeText(getApplicationContext(),"image Path done",Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Toast.makeText(getApplicationContext(),"image Path cancelled",Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+
                             progressDialog.dismiss();
-                            Toast.makeText(DonorSignUp.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DonorSignUp.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(DonorSignUp.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DonorSignUp.this, "Image upload Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("Upload failure",e.getMessage());
                         }
                     })
@@ -249,9 +275,11 @@ public class DonorSignUp extends AppCompatActivity {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploading "+(int)progress+"%");
                         }
                     });
+
+
         }
     }
 
@@ -265,8 +293,8 @@ public class DonorSignUp extends AppCompatActivity {
         DatabaseReference userReference=rootReference.child("Users").child("Donor");
         DatabaseReference myRef = userReference.child(encodeUserEmail(sign_up_email));
 
-        DonorClass userprofile =new DonorClass(sign_up_name,sign_up_email,sign_up_mobile,sign_up_password,sign_up_blood_group,sign_up_address,sign_up_dod);
-        myRef.setValue(userprofile);
+        DonorClass userProfile =new DonorClass(sign_up_name,sign_up_email,sign_up_mobile,sign_up_password,sign_up_blood_group,sign_up_address,sign_up_dod);
+        myRef.setValue(userProfile);
         Toast.makeText(getApplicationContext(),"sending userdata",Toast.LENGTH_SHORT).show();
         uploadImage();
 

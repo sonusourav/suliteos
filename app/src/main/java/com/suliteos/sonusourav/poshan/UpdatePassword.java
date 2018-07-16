@@ -29,10 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
-import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_LOGIN_TYPE;
-import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_PREFS_NAME;
-
 public class UpdatePassword extends AppCompatActivity {
 
     private EditText newPassword;
@@ -42,7 +38,9 @@ public class UpdatePassword extends AppCompatActivity {
     private EditText oldPassword;
     private static SharedPreferences.Editor poshanEditor;
     private SharedPreferences poshanPref;
-    public static String POSHAN_PREF_PASSWORD = "password";
+    public  String POSHAN_LOGIN_TYPE="PoshanLoginType";
+    public  String POSHAN_PREFS_NAME = "mypref";
+    public  String POSHAN_PREF_PASSWORD = "password";
     private ProgressBar updateProgressBar;
     private Button update;
     DatabaseReference userRef;
@@ -132,7 +130,7 @@ public class UpdatePassword extends AppCompatActivity {
 
                                                 Toast.makeText(getApplicationContext(),"Password successfully updated",Toast.LENGTH_SHORT).show();
                                                 Log.d("Update Password", "Password updated");
-                                                startActivity(new Intent(UpdatePassword.this,MainActivity.class));
+                                                startActivity(new Intent(UpdatePassword.this,WelcomeActivity.class));
                                             } else {
                                                 Toast.makeText(getApplicationContext(),"Password update failed. Try Again!",Toast.LENGTH_SHORT).show();
                                                 update.setEnabled(true);

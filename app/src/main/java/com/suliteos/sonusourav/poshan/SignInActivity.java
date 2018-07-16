@@ -44,21 +44,17 @@ public class SignInActivity extends AppCompatActivity {
     private TextView register;
     String signInUsername;
     String signInPassword;
-    public static String POSHAN_PREFS_NAME = "mypref";
-    public static String POSHAN_LOGIN_TYPE="donor";
-    public static String POSHAN_PREF_USERNAME = "username";
-    public static String POSHAN_PREF_PASSWORD = "password";
-    public static SharedPreferences.Editor poshanEditor;
-    private SharedPreferences poshanPref;
-    public static String Poshan_isLoggedIn = "false";
-    public static String TAG;
-    private static long back_pressed;
-    private ActionBar signInActionar;
+    public  String POSHAN_PREFS_NAME = "mypref";
+    public  String POSHAN_LOGIN_TYPE="PoshanLoginType";
+    public  String POSHAN_PREF_USERNAME = "username";
+    public  String POSHAN_PREF_PASSWORD = "password";
+    public  String Poshan_isLoggedIn = "PoshanIsLoggedIn";
+    public  SharedPreferences.Editor poshanEditor;
+    public  String TAG;
+    private  long back_pressed;
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
     private ProgressBar signInProgressBar;
     private int counter = 5;
-    private  DatabaseReference databaseReference;
     private DatabaseReference donorRef;
 
 
@@ -73,8 +69,8 @@ public class SignInActivity extends AppCompatActivity {
         }
 
 
-        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users");
-        donorRef =databaseReference.child("Donor").getRef();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        donorRef = databaseReference.child("Donor").getRef();
 
 
         sign_in_username=findViewById(R.id.ed_user_name);
@@ -87,10 +83,9 @@ public class SignInActivity extends AppCompatActivity {
         register=findViewById(R.id.sign_in_register);
         signInProgressBar =findViewById(R.id.sign_in_progress_bar);
         firebaseAuth = FirebaseAuth.getInstance();
-        user=firebaseAuth.getCurrentUser();
 
 
-        poshanPref = getApplicationContext().getSharedPreferences(POSHAN_PREFS_NAME, 0);
+        SharedPreferences poshanPref = getSharedPreferences(POSHAN_PREFS_NAME, 0);
         poshanEditor = poshanPref.edit();
         poshanEditor.putString(Poshan_isLoggedIn, "false");
 
@@ -174,7 +169,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        signInActionar = getSupportActionBar();
+        ActionBar signInActionar = getSupportActionBar();
         assert signInActionar != null;
         signInActionar.setHomeButtonEnabled(true);
         signInActionar.setDisplayHomeAsUpEnabled(true);
@@ -212,7 +207,7 @@ public class SignInActivity extends AppCompatActivity {
 
                     donorRef.child(encodeUserEmail(userName)).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot snapshot) {
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
                             poshanEditor.putString(POSHAN_LOGIN_TYPE,"donor");
                             poshanEditor.apply();
@@ -221,8 +216,8 @@ public class SignInActivity extends AppCompatActivity {
 
                             }else {
                                 poshanEditor.putString(POSHAN_LOGIN_TYPE,"hospital");
-                                Log.d(POSHAN_LOGIN_TYPE,"hospital");
                                 poshanEditor.apply();
+                                Log.d(POSHAN_LOGIN_TYPE,"hospital");
 
                             }
                         }
@@ -232,8 +227,7 @@ public class SignInActivity extends AppCompatActivity {
                             Toast.makeText(SignInActivity.this, "Login Failed "+ databaseError + "\nPlease try again.", Toast.LENGTH_SHORT).show();
                             FirebaseAuth.getInstance().signOut();
                             counter--;
-                            sign_in_username.setText("");
-                            sign_in_password.setText("");
+
 
                         }
 
@@ -266,11 +260,12 @@ public class SignInActivity extends AppCompatActivity {
     private void checkEmailVerification(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            Boolean emailFlag = firebaseUser.isEmailVerified();
+        assert firebaseUser != null;
+        Boolean emailFlag = firebaseUser.isEmailVerified();
 
             if (emailFlag){
                 Toast.makeText(getApplicationContext(),"Signed In successfully",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(SignInActivity.this,MainActivity.class);
+                Intent intent=new Intent(SignInActivity.this,WelcomeActivity.class);
                 startActivity(intent);
 
                 finish();

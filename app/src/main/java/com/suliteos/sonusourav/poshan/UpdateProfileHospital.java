@@ -1,7 +1,9 @@
 package com.suliteos.sonusourav.poshan;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,9 +14,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.Objects;
 
 public class UpdateProfileHospital extends AppCompatActivity {
     android.support.v7.app.ActionBar UpdateHosActionBar;
@@ -39,7 +48,11 @@ public class UpdateProfileHospital extends AppCompatActivity {
     private DatabaseReference profileEmailRef;
     private String userEmail;
     private ProgressBar profileHosProgressbar;
-
+    private ImageView profileHosPic;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    private StorageReference imageRef;
+    private String hosPath;
 
     static String encodeUserEmail(String userEmail) {
         return userEmail.replace(".", ",");
@@ -58,7 +71,7 @@ public class UpdateProfileHospital extends AppCompatActivity {
         profileHosIncharge = findViewById(R.id.update_incharge_hospital);
         editButton = findViewById(R.id.edit_button_hospital);
         profileHosProgressbar =findViewById(R.id.update_progress_bar_hospital);
-
+        profileHosPic=findViewById(R.id.update_profile_pic);
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
@@ -70,7 +83,9 @@ public class UpdateProfileHospital extends AppCompatActivity {
         profilerootRef = profilefirebaseInstance.getReference("Users");
         profileuserIdRef = profilerootRef.child("Hospital");
         user = FirebaseAuth.getInstance().getCurrentUser();
-        String testEmail = encodeUserEmail(user.getEmail());
+        assert user != null;
+        userEmail=user.getEmail();
+        String testEmail = encodeUserEmail(Objects.requireNonNull(user.getEmail()));
         profileEmailRef = profileuserIdRef.child(testEmail).getRef();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -89,7 +104,26 @@ public class UpdateProfileHospital extends AppCompatActivity {
         });
 
 
+        firebaseStorage=FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReferenceFromUrl(getString(R.string.bucketURL)).child("Users/Hospital/"+encodeUserEmail(userEmail)+"/images");
 
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("hospital_URL",uri.toString());
+                hosPath=uri.toString();
+                Glide.with(getApplicationContext())
+                        .load(hosPath)
+                        .into(profileHosPic);
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("imageURL","failure");
+            }
+        });
 
 
 
@@ -228,7 +262,6 @@ public class UpdateProfileHospital extends AppCompatActivity {
 
         if (profileauth.getCurrentUser() != null) {
 
-            userEmail = user.getEmail();
 
 
             profileEmailRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -266,7 +299,7 @@ public class UpdateProfileHospital extends AppCompatActivity {
             });
 
 
-            Intent intent = new Intent(UpdateProfileHospital.this, MainActivity.class);
+            Intent intent = new Intent(UpdateProfileHospital.this, WelcomeActivity.class);
             startActivity(intent);
 
         }

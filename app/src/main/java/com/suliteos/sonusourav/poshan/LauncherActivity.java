@@ -2,14 +2,12 @@ package com.suliteos.sonusourav.poshan;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -28,11 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_LOGIN_TYPE;
-import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_PREFS_NAME;
-import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_PREF_PASSWORD;
-import static com.suliteos.sonusourav.poshan.SignInActivity.POSHAN_PREF_USERNAME;
-import static com.suliteos.sonusourav.poshan.SignInActivity.Poshan_isLoggedIn;
 
 public class LauncherActivity extends AppCompatActivity implements Animation.AnimationListener {
     public static SharedPreferences.Editor poshanEditor;
@@ -40,8 +33,12 @@ public class LauncherActivity extends AppCompatActivity implements Animation.Ani
     public static String TAG=LauncherActivity.class.getCanonicalName();
     private DatabaseReference databaseReference;
     private DatabaseReference donorRef;
-    public static String POSHAN_LOGIN_TYPE="donor";
     Animation animFadeIn;
+    public  String POSHAN_LOGIN_TYPE="PoshanLoginType";
+    public  String POSHAN_PREFS_NAME = "mypref";
+    public  String POSHAN_PREF_USERNAME = "username";
+    public  String POSHAN_PREF_PASSWORD = "password";
+    public  String Poshan_isLoggedIn = "PoshanIsLoggedIn";
 
     LinearLayout linearLayout;
     private FirebaseAuth firebaseAuth;
@@ -50,9 +47,7 @@ public class LauncherActivity extends AppCompatActivity implements Animation.Ani
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher_screen);
 
-        if (savedInstanceState != null) {
-            onRestoreInstanceState(savedInstanceState);
-        }
+
 
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
@@ -93,6 +88,7 @@ public class LauncherActivity extends AppCompatActivity implements Animation.Ani
 
     @Override
     public void onAnimationStart(Animation animation) {
+
         if (Objects.equals(poshanPref.getString(Poshan_isLoggedIn, null), "true")) {
             Log.d(TAG, "Launcher:onCreate: Poshan_isLoggedIn=true");
             final String launcherSignInUsername = poshanPref.getString(POSHAN_PREF_USERNAME, null);
@@ -133,7 +129,7 @@ public class LauncherActivity extends AppCompatActivity implements Animation.Ani
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        final Intent mainIntent = new Intent(LauncherActivity.this, MainActivity.class);
+                                        final Intent mainIntent = new Intent(LauncherActivity.this, WelcomeActivity.class);
                                         LauncherActivity.this.startActivity(mainIntent);
                                         LauncherActivity.this.finish();
                                     }

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.suliteos.sonusourav.poshan">
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -13,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:largeHeap="true">
+
         <activity android:name=".LauncherActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
@@ -22,35 +25,57 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+
+        <activity android:name=".WelcomeActivity"
             android:screenOrientation="locked"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-
         </activity>
+
         <activity android:name=".SignInActivity"
             android:theme="@style/AppTheme"
             android:label="Login"
             android:screenOrientation="locked"
             android:configChanges="orientation|screenSize|keyboardHidden"
             />
+
         <activity android:name=".ForgotPassword"
             android:label="Forgot password"
             android:screenOrientation="locked"
             android:theme="@style/AppTheme"/>
+
         <activity android:name=".DonorSignUp"
             android:label="Sign Up"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="locked"
             android:theme="@style/AppTheme"/>
-        <activity android:name=".DonorSignUp"
+
+        <activity android:name=".HospitalSignUp"
             android:label="Sign Up"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="locked"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".HospitalSignUp" />
+            />
         <activity android:name=".UpdatePassword" />
         <activity android:name=".UpdateProfileDonor" />
         <activity android:name=".UpdateProfileHospital" />
+        <activity android:name=".FacebookLoginActivity"/>
+
+
+        <activity
+            android:name=".FirebaseUIActivity"
+            android:label="@string/label_firebase_ui" />
+
+        <!-- Facebook Configuration -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
+
+
     </application>
 
 </manifest>

@@ -253,9 +253,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp">
 
-                        <android.support.v7.widget.AppCompatEditText
+
+                    <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/user_sign_up_dod"
                             android:layout_width="270dp"
                             android:layout_height="45dp"
@@ -305,7 +307,7 @@
                     android:id="@+id/user_sign_up_btn"
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/curved_button"
                     android:text="@string/register"
                     android:textAllCaps="false"
@@ -335,8 +337,9 @@
     <ProgressBar
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:id="@+id/sign_up_progress_bar"
+        android:id="@+id/donor_sign_up_progress_bar"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"/>
 </LinearLayout>
 

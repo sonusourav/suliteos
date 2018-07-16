@@ -29,14 +29,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,20 +61,12 @@ public class HospitalSignUp extends AppCompatActivity {
 
     private ProgressBar hosProgressBar;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference userReference;
-    private DatabaseReference donorReference;
-    private DatabaseReference hospitalReference;
-    private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
 
     //image upload
-    private static int PICK_IMAGE = 123;
     private Uri mImageUri;
-
-
-
+    private String imagePath;
     private static Bitmap Image = null;
-    private static Bitmap rotateImage = null;
     private CircleImageView userProfilePic;
     private static final int GALLERY = 1;
 
@@ -85,12 +81,9 @@ public class HospitalSignUp extends AppCompatActivity {
         }
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference().child("Users").child("Hospital");
-        userReference= FirebaseDatabase.getInstance().getReference().child("Users");
-        donorReference=userReference.child("Donor");
-        hospitalReference=userReference.child("Hospital");
         firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference().child("Users").child("Hospital");
 
 
 
@@ -164,10 +157,39 @@ public class HospitalSignUp extends AppCompatActivity {
             progressDialog.show();
 
             StorageReference ref = storageReference.child(encodeUserEmail(sign_up_email)).child("images");
-            ref.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            UploadTask uploadTask = ref.putFile(mImageUri);
+
+           uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+                            imagePath = Objects.requireNonNull(taskSnapshot.getMetadata()).getPath();
+                            Log.d("HosImagePath",imagePath);
+
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference rootReference=firebaseDatabase.getReference();
+                            DatabaseReference userReference=rootReference.child("Users").child("Hospital");
+                            DatabaseReference myRef = userReference.child(encodeUserEmail(sign_up_email));
+
+                            myRef.child("hosImagePath").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    dataSnapshot.getRef().setValue(imagePath);
+                                    Toast.makeText(getApplicationContext(),"image Path uploaded",Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Toast.makeText(getApplicationContext(),"image Path upload failed",Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+
+
+
                             progressDialog.dismiss();
                             Toast.makeText(HospitalSignUp.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
@@ -290,7 +312,6 @@ public class HospitalSignUp extends AppCompatActivity {
     //send Userdata to database
     private void sendUserData(){
 
-
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference rootReference=firebaseDatabase.getReference();
         DatabaseReference userReference=rootReference.child("Users").child("Hospital");
@@ -298,8 +319,8 @@ public class HospitalSignUp extends AppCompatActivity {
 
         HospitalClass userprofile =new HospitalClass(sign_up_name,sign_up_email,sign_up_mobile,sign_up_password,sign_up_blood,sign_up_address,sign_up_incharge);
         myRef.setValue(userprofile);
-        uploadImage();
         Toast.makeText(getApplicationContext(),"sending userdata",Toast.LENGTH_SHORT).show();
+        uploadImage();
 
 
     }
@@ -313,15 +334,14 @@ public class HospitalSignUp extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
                         sendUserData();
-                        firebaseAuth.signOut();
-
                         Toast.makeText(HospitalSignUp.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_SHORT).show();
+
                     }else {
                         Toast.makeText(HospitalSignUp.this, "Verification mail hasn't been sent!", Toast.LENGTH_SHORT).show();
+                        hosProgressBar.setVisibility(View.GONE);
                     }
 
                     startActivity(new Intent(HospitalSignUp.this, SignInActivity.class));
-                    hosProgressBar.setVisibility(View.GONE);
 
                 }
             });
